@@ -12,19 +12,19 @@ module "vpc" {
 
   azs             = ["${var.region}a", "${var.region}b", "${var.region}c"]
   private_subnets = ["10.20.1.0/24", "10.20.2.0/24", "10.20.3.0/24"]
-  public_subnets  = ["10.20.101.0/24","10.20.102.0/24","10.20.103.0/24"]
+  public_subnets  = ["10.20.101.0/24", "10.20.102.0/24", "10.20.103.0/24"]
 
-  enable_nat_gateway     = true
-  single_nat_gateway     = true
-  enable_dns_hostnames   = true
-  enable_dns_support     = true
+  enable_nat_gateway   = true
+  single_nat_gateway   = true
+  enable_dns_hostnames = true
+  enable_dns_support   = true
 }
 
 
 # -------- EKS --------
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "21.1.3"     # pin for repeatability
+  version = "21.1.3" # pin for repeatability
 
   name               = local.name_prefix
   kubernetes_version = var.k8s_version
@@ -40,9 +40,9 @@ module "eks" {
   # - Install coredns/kube-proxy/vpc-cni as managed add-ons
   # - Install Pod Identity agent so you can use EKS Pod Identity
   addons = {
-    coredns = {}
-    kube-proxy = {}
-    vpc-cni = { before_compute = true }
+    coredns                = {}
+    kube-proxy             = {}
+    vpc-cni                = { before_compute = true }
     eks-pod-identity-agent = { before_compute = true }
   }
 
@@ -60,11 +60,11 @@ module "eks" {
 
 
 # Example: output the cluster essentials
-output "cluster_name"   { value = module.eks.cluster_name }
-output "cluster_arn"    { value = module.eks.cluster_arn }
-output "cluster_version"{ value = module.eks.cluster_version }
+output "cluster_name" { value = module.eks.cluster_name }
+output "cluster_arn" { value = module.eks.cluster_arn }
+output "cluster_version" { value = module.eks.cluster_version }
 output "oidc_provider_arn" { value = module.eks.oidc_provider_arn }
-output "node_group_names"  { value = module.eks.eks_managed_node_groups }
+output "node_group_names" { value = module.eks.eks_managed_node_groups }
 
 
 
